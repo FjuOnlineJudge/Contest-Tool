@@ -9,7 +9,8 @@ sh folder_generate.sh {folder_name}
 
 # 生成測資
 在資料夾內必須有 `AC.cpp` 和 `generate.sh`。
-生成測資程式參考：https://github.com/luogu-dev/cyaron
+
+生成測資程式參考：https://github.com/luogu-dev/cyaron。
 
 ```
 sh testdata_generate.sh {folder_name}
