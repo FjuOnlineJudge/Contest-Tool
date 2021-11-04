@@ -66,19 +66,26 @@
 
 \newcounter{pid}
 \newcounter{ncase}[pid]
+\newcounter{coverPid}
 
 \newcommand{\ith}[1]{$#1^\text{th}$}
 \newcommand{\tightlist}{\setlength\itemsep{0mm}\setlength\parskip{0mm}}
 
+\newcommand{\problemList}[4] % dir, title, time, memory
+{
+	\stepcounter{coverPid}
+    \Alph{coverPid} & #2 & #3 sec \\ 
+}
+
 \newcommand{\testdata}[1]
 {
 	\stepcounter{ncase}
-	\IfFileExists{#1/sample/\arabic{ncase}.in}
+	\IfFileExists{#1/data/sample/\arabic{ncase}.in}
     {
 		\subsection*{Sample Input \arabic{ncase}}
-		\lstinputlisting{#1/sample/\arabic{ncase}.in}
+		\lstinputlisting{#1/data/sample/\arabic{ncase}.in}
 		\subsection*{Sample Output \arabic{ncase}}
-		\lstinputlisting{#1/sample/\arabic{ncase}.ans}
+		\lstinputlisting{#1/data/sample/\arabic{ncase}.ans}
 		\testdata{#1}
     }{}
 }
@@ -134,7 +141,28 @@
 \begin{document}
 
 %-------封面開始-------%
-\input{cover.tex}
+\quad \vspace{1cm}
+\begin{center}
+\includegraphics[width=2in]{image/fjcu.png} \\
+\vspace{1cm}
+\begin{bfseries}
+\Large{FJCU 第一次自辦賽} \\
+\end{bfseries}
+% \small{2020 Spring}
+\end{center}
+\vspace{1cm}
+
+\begin{center}
+    \begin{tabular}{clc}
+        \toprule
+            ID & Problem Name & Time Limit \\
+        \midrule
+            % \problemList{folder_name}{problem_name}{time_limit}{memory_limit}
+        \bottomrule
+    \end{tabular}
+\end{center}
+\thispagestyle{empty}
+\clearpage  % 清除當頁頁碼
 %-------封面結束-------%
 
 \abovedisplayshortskip=0pt
@@ -142,5 +170,6 @@
 \abovedisplayskip=2pt
 \belowdisplayskip=2pt
 
-% \problem{資料夾名稱}{題目名稱}{2}{16}
+% \problem{folder_name}{problem_name}{time_limit}{memory_limit}
+
 \end{document}
