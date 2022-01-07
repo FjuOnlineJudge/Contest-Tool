@@ -12,7 +12,7 @@ args = parser.parse_args()
 excludeFile = '*.zip'
 
 if args.domjudge:
-    excludeFile = '*.tex /submissions/* generate.py'
+    excludeFile = '*.tex generate.py'
 elif args.exclude:
     str = args.exclude[0]
     for e in str:
