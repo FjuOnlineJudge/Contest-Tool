@@ -11,12 +11,12 @@ contest_id = 1
 adminName = ""
 adminPassword = ""
 onlyCorrectCode = True
-L, R = 1,100
+teamId = [i for i in range(101,200)]
+problemDict = {"":"A","":"B","":"C","":"D","":"E","":"F","":"G"} # map problem ID to alphabet
 
 # get the correct code ID
 if onlyCorrectCode:
     judgements = requests.get("http://%s/api/v4/contests/%d/judgements"%(server,contest_id), auth=HTTPBasicAuth(adminName, adminPassword), headers={'User-Agent': 'Mozilla'})
-    print(judgements.status_code)
     judgements = json.loads(judgements.text)
     AC = []
     for j in judgements:
@@ -34,9 +34,6 @@ except:
     pass
 
 os.chdir("submits")
-
-# map problem ID to alphabet
-problemDict = {"4":"A","5":"E","6":"F","7":"D","8":"G","9":"C","10":"B"}
 
 # download code
 for s in submissions:
@@ -61,7 +58,7 @@ for s in submissions:
     print("Success download code with id=%s"%s["id"])
 
 # compress every participant's code
-for id in range(L,R):
+for id in teamId:
     path = "./" + str(id)
     if os.path.isdir(path):
         subprocess.call("zip -r " + str(id) + ".zip " + path)
