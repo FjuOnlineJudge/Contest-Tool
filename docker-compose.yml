@@ -21,4 +21,4 @@ services:
     container_name: pdfMaker
     image: hjackh/codebook-builder
     volumes:
-      - "$(pwd):/storage"
+      - ".:/storage"
