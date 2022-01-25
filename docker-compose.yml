@@ -20,5 +20,6 @@ services:
   pdfMaker:
     container_name: pdfMaker
     image: hjackh/codebook-builder
+    command: ["sleep","infinity"]
     volumes:
       - ".:/storage"
