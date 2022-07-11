@@ -1,4 +1,5 @@
 # reference: https://geekflare.com/send-gmail-in-python/
+# https://www.tutorialexample.com/send-email-to-others-by-outlook-email-python-smtp-tutorial/
 import os, sys
 import smtplib, ssl
 from email.mime.text import MIMEText
@@ -9,23 +10,29 @@ from pathlib import Path
 
 class Mail:
 
-    def __init__(self):
-        self.port = 465
-        self.smtp_server_domain_name = "smtp.gmail.com"
-        # https://stackoverflow.com/questions/16512592/login-credentials-not-working-with-gmail-smtp
-        # https://www.google.com/settings/security/lesssecureapps
-        # https://www.learncodewithmike.com/2020/02/python-email.html
-        self.sender_mail = ""
-        self.password = ""
-        self.subject = ""
+    def __init__(self, port = 465, smtp_server_domain_name = "smtp.gmail.com", sender_mail = "", password = "", subject = ""):
+        # # https://stackoverflow.com/questions/16512592/login-credentials-not-working-with-gmail-smtp
+        # # https://www.google.com/settings/security/lesssecureapps
+        # # https://www.learncodewithmike.com/2020/02/python-email.html
+        self.port = port
+        self.smtp_server_domain_name = smtp_server_domain_name
+        self.sender_mail = sender_mail
+        self.password = password
+        self.subject = subject
 
     def send(self, data):
-        ssl_context = ssl.create_default_context()
-        service = smtplib.SMTP_SSL(self.smtp_server_domain_name, self.port, context=ssl_context)
+        if self.port == 465:
+            ssl_context = ssl.create_default_context()
+            service = smtplib.SMTP_SSL(self.smtp_server_domain_name, self.port, context=ssl_context)
+        elif self.port == 587:
+            service = smtplib.SMTP(self.smtp_server_domain_name, self.port)
+            service.ehlo()
+            service.starttls()
+            service.ehlo() 
         service.login(self.sender_mail, self.password)
         
         for d in data:
-            email, teamid, passwd = d
+            email, name = d
             ## MIMEMultipart instance
             mail = MIMEMultipart('alternative')
             mail['Subject'] = self.subject
@@ -49,14 +56,15 @@ class Mail:
             mail.attach(html_content)
 
             ## attaching an attachment
-            file_path = "./submits/" + str(teamid) + ".zip"
-            if os.path.isfile(file_path):
-                mimeBase = MIMEBase("application", "octet-stream")
-                with open(file_path, "rb") as file:
-                    mimeBase.set_payload(file.read())
-                encoders.encode_base64(mimeBase)
-                mimeBase.add_header("Content-Disposition", f"attachment; filename={Path(file_path).name}")
-                mail.attach(mimeBase)
+            file_path_set = [] # f".out/submits/sample.zip"
+            for file_path in file_path_set:
+                if os.path.isfile(file_path):
+                    mimeBase = MIMEBase("application", "octet-stream")
+                    with open(file_path, "rb") as file:
+                        mimeBase.set_payload(file.read())
+                    encoders.encode_base64(mimeBase)
+                    mimeBase.add_header("Content-Disposition", f"attachment; filename={Path(file_path).name}")
+                    mail.attach(mimeBase)
 
             ## sending mail
             try:
@@ -69,9 +77,6 @@ class Mail:
         service.quit()
 
 if __name__ == '__main__':
-    data = []
-    for s in sys.stdin:
-        data.append(s.split())
-
+    data = [s.split(",") for s in sys.stdin]
     mail = Mail()
     mail.send(data)

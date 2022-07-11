@@ -17,7 +17,7 @@ for folder in args.folder:
     os.chdir('./%s'%(folder))
     shutil.copy('./submissions/accepted/1.cpp', './AC.cpp')
     subprocess.call('g++ ./AC.cpp -o ./a.exe', shell=True)
-    subprocess.call('py ./generate.py', shell=True)
+    subprocess.call('python ./generate.py', shell=True)
     os.remove('./AC.cpp')
     os.remove('./a.exe')
     print('Already generate testdata in %s folder.'%(folder))

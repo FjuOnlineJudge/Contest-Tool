@@ -7,58 +7,57 @@ from requests.auth import HTTPBasicAuth
 
 # parameter
 server = ""
-contest_id = 1
 adminName = ""
 adminPassword = ""
-onlyCorrectCode = True
-teamId = [i for i in range(101,200)]
-problemDict = {"":"A","":"B","":"C","":"D","":"E","":"F","":"G"} # map problem ID to alphabet
 
-# get the correct code ID
-if onlyCorrectCode:
-    judgements = requests.get("http://%s/api/v4/contests/%d/judgements"%(server,contest_id), auth=HTTPBasicAuth(adminName, adminPassword), headers={'User-Agent': 'Mozilla'})
-    judgements = json.loads(judgements.text)
-    AC = []
-    for j in judgements:
-        if j["judgement_type_id"] == "AC":
-            AC.append(j["submission_id"])
+def getSpecificResultSubmission(cid, submission, result):
+    judgements = json.loads(requests.get("http://%s/api/v4/contests/%d/judgements"%(server,cid), auth=HTTPBasicAuth(adminName, adminPassword), headers={'User-Agent': 'Mozilla'}).text)
+    sid = [j["submission_id"] for j in list(filter(lambda j: j["judgement_type_id"] == result, judgements))]
+    submission = list(filter(lambda s: s["id"] in sid, submission))
+    return submission
 
-# get the submissions' information in json format
-submissions = requests.get("http://%s/api/v4/contests/%d/submissions?strict=false"%(server,contest_id), auth=HTTPBasicAuth(adminName, adminPassword), headers={'User-Agent': 'Mozilla'})
-submissions = json.loads(submissions.text)
+def downloadCode(cid, category = 0, originID = 0, onlyAC=False):
+    # category: 0-> by team, 1-> by problem
 
-# make and change to "submit" folder
-try:
-    os.mkdir("submits")
-except:
-    pass
+    submissions = json.loads(requests.get("http://%s/api/v4/contests/%d/submissions?strict=false"%(server,cid), auth=HTTPBasicAuth(adminName, adminPassword), headers={'User-Agent': 'Mozilla'}).text)
+    submissions = getSpecificResultSubmission(cid, submissions, "AC") if onlyAC else submissions
+    problems = json.loads(requests.get("http://%s/api/v4/contests/%d/problems"%(server,cid), auth=HTTPBasicAuth(adminName, adminPassword), headers={'User-Agent': 'Mozilla'}).text)
+    problemDict = {d["id"]: d["short_name"] for d in problems} if originID else {d["id"]: d["label"] for d in problems}
 
-os.chdir("submits")
+    folderList = list(set([s["problem_id"] for s in submissions] if category == 1 else [s["team_id"] for s in submissions]))
+    for folder in folderList:
+        try:
+            os.mkdir(folder)
+        except:
+            pass
 
-# download code
-for s in submissions:
-    if s["language_id"] == "python3":
-        s["language_id"] = "py"
-    tid = s["team_id"]
-    
+    for s in submissions:
+        s["language_id"] = "py" if s["language_id"] == "python3" else s["language_id"]
+        filename = "%s/%s_%s.%s"%(problemDict[s["problem_id"]],s["team_id"],s["id"],s["language_id"]) if category == 1 else "%s/%s_%s.%s"%(s["team_id"],problemDict[s["problem_id"]],s["id"],s["language_id"])
+
+        submit = json.loads(requests.get("http://%s/api/v4/contests/%d/submissions/%s/source-code"%(server,cid,s["id"]), auth=HTTPBasicAuth(adminName, adminPassword),headers={"accept":"application/json","Authorization":"Basic xxxxx"}).text)[0]
+
+        with open(filename, "wb") as f:
+            f.write(base64.b64decode(submit["source"]))
+        
+        print("Success download code with id=%s"%s["id"])
+
+def compressFolder(cid):
+    teams = json.loads(requests.get("http://%s/api/v4/contests/%d/teams"%(server,cid), auth=HTTPBasicAuth(adminName, adminPassword), headers={'User-Agent': 'Mozilla'}).text)
+    teams = [int(t["id"]) for t in teams]
+
+    for id in teams:
+        path = "./" + str(id)
+        if os.path.isdir(path):
+            subprocess.call("zip -r 1102_r6_" + str(id) + ".zip " + path)
+
+
+if __name__ == '__main__':
     try:
-        os.mkdir(str(tid))
+        os.mkdir("out/submits")
     except:
         pass
-
-    if onlyCorrectCode and (s["id"] not in AC):
-        continue
-
-    submit = requests.get("http://%s/api/v4/contests/%d/submissions/%s/source-code"%(server,contest_id,s["id"]), auth=HTTPBasicAuth(adminName, adminPassword),headers={"accept":"application/json","Authorization":"Basic xxxxx"})
-    submit = json.loads(submit.text)[0]
-    
-    with open("%s\%s_%s.%s"%(s["team_id"],problemDict[s["problem_id"]],s["id"],s["language_id"]),"wb") as f:
-        f.write(base64.b64decode(submit["source"]))
-    
-    print("Success download code with id=%s"%s["id"])
-
-# compress every participant's code
-for id in teamId:
-    path = "./" + str(id)
-    if os.path.isdir(path):
-        subprocess.call("zip -r " + str(id) + ".zip " + path)
+    os.chdir("out/submits")
+    cid = 0
+    downloadCode(cid)
+    compressFolder(cid)
