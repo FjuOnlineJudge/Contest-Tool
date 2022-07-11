@@ -7,8 +7,9 @@
 \usepackage{musicography}
 \usepackage{xcolor,soul}
 \sethlcolor{lightgray}
+\newcommand{\ContestName}{比賽名稱}
 
-\title{FJCU 自辦賽}
+\title{\ContestName{}}
 \usepackage[xetex,
 			pdfencoding=auto,
 			pdftitle={\thetitle},
@@ -49,8 +50,7 @@
 {
 	\fancyhf{}
 	\fancyhead[L]{\includegraphics[height=10mm]{image/fjcu.png}}
-	\fancyhead[C]{\large{FJCU 自辦賽\vspace{1mm}}}
-	% \fancyhead[R]{\includegraphics[height=10mm]{image/pcca.jpg}}
+	\fancyhead[C]{\large{\ContestName{}\vspace{1mm}}}
     \fancyfoot[C]{\thepage}
 }
 \pagestyle{document}
@@ -146,7 +146,7 @@
 \includegraphics[width=2in]{image/fjcu.png} \\
 \vspace{1cm}
 \begin{bfseries}
-\Large{FJCU 第一次自辦賽} \\
+\Large{\ContestName{}} \\
 \end{bfseries}
 % \small{2020 Spring}
 \end{center}

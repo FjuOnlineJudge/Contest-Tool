@@ -277,8 +277,14 @@ TSWLatexianTemp*
 *.lpz
 
 # folder
+.venv/
+.vscode/
 at*/
 abc*/
 arc*/
-uva*/
 cf*/
+out/
+uva*/
+
+# other
+problem.tex
