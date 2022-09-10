@@ -9,6 +9,7 @@ from requests.auth import HTTPBasicAuth
 server = ""
 adminName = ""
 adminPassword = ""
+cid = 0 # contest id
 
 def getSpecificResultSubmission(cid, submission, result):
     judgements = json.loads(requests.get("http://%s/api/v4/contests/%d/judgements"%(server,cid), auth=HTTPBasicAuth(adminName, adminPassword), headers={'User-Agent': 'Mozilla'}).text)
@@ -58,6 +59,5 @@ if __name__ == '__main__':
     except:
         pass
     os.chdir("out/submits")
-    cid = 0
     downloadCode(cid)
     compressFolder(cid)

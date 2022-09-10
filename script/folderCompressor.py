@@ -6,6 +6,7 @@ parser = argparse.ArgumentParser(description='Compress problem folder', epilog='
 group = parser.add_mutually_exclusive_group()
 group.add_argument('-d', '--domjudge', action='store_true', help='export to domjudge archive')
 group.add_argument('-e', '--exclude', nargs= 1, help='select types to exclude (t: tex files, s: submissions, g: generate.py). (e.g. -e ts, -e g)')
+group.add_argument('-p', '--practice', action='store_true', help='export to practice archive')
 parser.add_argument('folder', nargs='+', help='Folder name')
 args = parser.parse_args()
 
@@ -13,6 +14,8 @@ excludeFile = '*.zip'
 
 if args.domjudge:
     excludeFile = '*.tex *.txt generate.py'
+elif args.practice:
+    excludeFile = '*.cpp *.java *.py *.ini *.tex *.txt'
 elif args.exclude:
     str = args.exclude[0]
     for e in str:
