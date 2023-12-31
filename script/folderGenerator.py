@@ -13,6 +13,8 @@ for folder in args.folder:
     shutil.copytree("./sample", "./%s"%(folder))
     os.mkdir("./%s/data"%(folder))
     os.mkdir("./%s/data/sample"%(folder))
+    open("./%s/data/sample/1.in"%(folder), "w")
+    open("./%s/data/sample/1.ans"%(folder), "w")
     os.mkdir("./%s/data/secret"%(folder))
     os.mkdir("./%s/submissions"%(folder))
     os.mkdir("./%s/submissions/accepted"%(folder))

@@ -13,9 +13,9 @@ args = parser.parse_args()
 excludeFile = '*.zip'
 
 if args.domjudge:
-    excludeFile = '*.tex *.txt generate.py'
+    excludeFile = '*.tex *.txt generate.py *.pdf'
 elif args.practice:
-    excludeFile = '*.cpp *.java *.py *.ini *.tex *.txt'
+    excludeFile = '*.py *.pdf *.ini *.tex *.txt image/* submissions/*'
 elif args.exclude:
     str = args.exclude[0]
     for e in str:

@@ -31,8 +31,12 @@ class Mail:
             service.ehlo() 
         service.login(self.sender_mail, self.password)
         
-        for d in data:
-            email, name = d
+        for idx,d in enumerate(data):
+            if idx == 0:
+                continue
+            sid, teamid, passwd = d
+            email = f"{sid}@m365.fju.edu.tw"
+
             ## MIMEMultipart instance
             mail = MIMEMultipart('alternative')
             mail['Subject'] = self.subject
@@ -72,7 +76,6 @@ class Mail:
                 print("Have already sent to: " + email)
             except:
                 print("Cannot send to: " + email)
-
 
         service.quit()
 

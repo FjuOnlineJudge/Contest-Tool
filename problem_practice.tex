@@ -1,0 +1,158 @@
+\documentclass[12pt, a4paper]{article}  % no fleqn pls
+\usepackage{tcolorbox}
+\usepackage{cmap}
+\usepackage{enumitem}
+\usepackage{titling}
+\usepackage{booktabs}
+\usepackage{musicography}
+\usepackage{xcolor,soul}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\sethlcolor{lightgray}
+\newcommand{\ContestName}{題目練習}
+
+\title{\ContestName{}}
+\usepackage[xetex,
+			pdfencoding=auto,
+			pdftitle={\thetitle},
+            pdfcreator={}]{hyperref}
+
+\usepackage[left=20mm, right=20mm, top=20mm, bottom=25mm]{geometry}
+\setlength{\headheight}{16mm}
+\setlength{\headsep}{2mm}
+\setlength{\parindent}{0mm}
+\usepackage[compact]{titlesec}
+\usepackage{setspace}
+\setstretch{1.2}
+
+\usepackage{caption}
+\usepackage{wrapfig}
+\usepackage{graphicx}
+\usepackage[export]{adjustbox}
+\usepackage[overlay, absolute]{textpos}
+
+\usepackage{array}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\usepackage{xfp}
+\usepackage{tikz}
+\usepackage{tikz-qtree}
+\usetikzlibrary{trees}
+\usetikzlibrary{calc}
+\usepackage{amsmath}
+
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\setCJKmainfont{Noto Sans CJK TC}
+
+\usepackage{fancyhdr}
+\fancypagestyle{document}
+{
+	\fancyhf{}
+	\fancyhead[L]{\includegraphics[height=10mm]{image/fjcu.png}}
+	\fancyhead[C]{\large{\ContestName{}\vspace{1mm}}}
+    \fancyfoot[C]{\thepage}
+}
+\pagestyle{document}
+
+\usepackage{listings}
+\lstset{basicstyle=\ttfamily, breaklines=false, frame=single, showlines=true}
+
+\usepackage{enumitem}
+\usepackage{paracol}
+\usepackage{ifthen}
+\usepackage{changepage}
+\usepackage{parskip}
+
+\newcounter{pid}
+\newcounter{ncase}[pid]
+\newcounter{coverPid}
+
+\newcommand{\ith}[1]{$#1^\text{th}$}
+\newcommand{\tightlist}{\setlength\itemsep{0mm}\setlength\parskip{0mm}}
+
+\newcommand{\problemList}[4] % dir, title, time, memory
+{
+	\stepcounter{coverPid}
+    \Alph{coverPid} & #2 & #3 sec \\ 
+}
+
+\newcommand{\testdata}[1]
+{
+	\stepcounter{ncase}
+	\IfFileExists{#1/data/sample/\arabic{ncase}.in}
+    {
+		\subsection*{Sample Input \arabic{ncase}}
+		\lstinputlisting{#1/data/sample/\arabic{ncase}.in}
+		\subsection*{Sample Output \arabic{ncase}}
+		\lstinputlisting{#1/data/sample/\arabic{ncase}.ans}
+		\testdata{#1}
+    }{}
+}
+
+\newcommand{\field}[4][1] % necessity, dir, field name, file name
+{
+	\ifthenelse{\equal{#1}{1}}
+	{
+		\subsection*{#3}\IfFileExists{#2/#4}{\input{#2/#4}}{}
+	}
+	{
+		\IfFileExists{#2/#4}{\subsection*{#3}\input{#2/#4}}{}
+	}
+}
+
+\newcommand{\problem}[4] % dir, title, time, memory
+{
+	% \checkoddpage
+	% \ifoddpage
+	% 	% do nothing
+	% \else
+	% 	\begin{center}\vspace*{\fill}
+	% 		{\LARGE Almost blank page}
+	% 	\vspace*{\fill}\end{center}
+	% 	\newpage
+	% \fi
+
+	\stepcounter{pid}
+    \vspace*{-8mm}
+    \begin{center}
+		% {\Large Problem \Alph{pid}}\\[2mm]
+		{\LARGE #2}\\[2mm]
+		\begin{tabular}{r@{}c@{ }l}
+			Time limit&:& #3 \ifthenelse{\equal{#3}{1}}{second}{seconds}\\
+			Memory limit&:& #4 \ifthenelse{\equal{#4}{1}}{megabyte}{megabytes}
+		\end{tabular}
+	\end{center}
+
+	\field{#1}{Problem Description}{statement.tex}
+
+	\field{#1}{Input Format}{input.tex}
+	\field{#1}{Output Format}{output.tex}
+	\field[0]{#1}{Technical Specification}{spec.tex}
+	\vspace{3mm}
+	\testdata{#1}
+	\field[0]{#1}{Hint}{hint.tex}
+	\field[0]{#1}{Note}{note.tex}
+	\newpage
+}
+
+\usepackage{layout}
+
+\begin{document}
+
+\abovedisplayshortskip=0pt
+\belowdisplayshortskip=0pt
+\abovedisplayskip=2pt
+\belowdisplayskip=2pt
+
+% \problem{folder_name}{problem_name}{time_limit}{memory_limit}
+% \problem{uva10617}{Again Palindrome}{3}{2048}
+% \problem{number}{輸出數字}{1}{2048}
+% \problem{calculation}{基本運算}{1}{2048}
+% \problem{uva10783}{Odd Sum}{3}{2048}
+% \problem{uva00100}{The 3n + 1 problem}{3}{2048}
+\problem{abc142B}{Roller Coaster}{2}{2048}
+
+\end{document}

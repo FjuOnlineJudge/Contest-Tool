@@ -7,9 +7,7 @@ from requests.auth import HTTPBasicAuth
 
 # parameter
 server = ""
-adminName = ""
 adminPassword = ""
-cid = 0 # contest id
 
 def getSpecificResultSubmission(cid, submission, result):
     judgements = json.loads(requests.get("http://%s/api/v4/contests/%d/judgements"%(server,cid), auth=HTTPBasicAuth(adminName, adminPassword), headers={'User-Agent': 'Mozilla'}).text)
@@ -25,7 +23,7 @@ def downloadCode(cid, category = 0, originID = 0, onlyAC=False):
     problems = json.loads(requests.get("http://%s/api/v4/contests/%d/problems"%(server,cid), auth=HTTPBasicAuth(adminName, adminPassword), headers={'User-Agent': 'Mozilla'}).text)
     problemDict = {d["id"]: d["short_name"] for d in problems} if originID else {d["id"]: d["label"] for d in problems}
 
-    folderList = list(set([s["problem_id"] for s in submissions] if category == 1 else [s["team_id"] for s in submissions]))
+    folderList = list(set([problemDict[s["problem_id"]] for s in submissions] if category == 1 else [s["team_id"] for s in submissions]))
     for folder in folderList:
         try:
             os.mkdir(folder)
@@ -43,15 +41,29 @@ def downloadCode(cid, category = 0, originID = 0, onlyAC=False):
         
         print("Success download code with id=%s"%s["id"])
 
-def compressFolder(cid):
-    teams = json.loads(requests.get("http://%s/api/v4/contests/%d/teams"%(server,cid), auth=HTTPBasicAuth(adminName, adminPassword), headers={'User-Agent': 'Mozilla'}).text)
-    teams = [int(t["id"]) for t in teams]
+def compressFolder(L,R):    
+    teamId = set()
+    for cid in range(L,R):
+        teams = json.loads(requests.get("http://%s/api/v4/contests/%d/teams"%(server,cid), auth=HTTPBasicAuth(adminName, adminPassword), headers={'User-Agent': 'Mozilla'}).text)
+        for t in teams:
+            teamId.add(f'{t["id"]}')
 
-    for id in teams:
-        path = "./" + str(id)
+    for id in teamId:
+        path = "./" + id
         if os.path.isdir(path):
-            subprocess.call("zip -r 1102_r6_" + str(id) + ".zip " + path)
+            subprocess.call("zip -r 1112_comp_2_" + str(id) + ".zip " + path)
 
+def getTeamInfo(L,R):
+    teamId = set()
+    for cid in range(L,R):
+        teams = json.loads(requests.get("http://%s/api/v4/contests/%d/teams"%(server,cid), auth=HTTPBasicAuth(adminName, adminPassword), headers={'User-Agent': 'Mozilla'}).text)
+        for t in teams:
+            teamId.add(f'{t["id"]}_{t["name"]}')
+
+    teamId = sorted(teamId)
+    for item in teamId:
+        print(item)
+    
 
 if __name__ == '__main__':
     try:
@@ -59,5 +71,3 @@ if __name__ == '__main__':
     except:
         pass
     os.chdir("out/submits")
-    downloadCode(cid)
-    compressFolder(cid)
