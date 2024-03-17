@@ -1,0 +1,31 @@
+name: Compile latex and release pdf
+
+permissions:
+  pull-requests: write
+  contents: write
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs: 
+  release-pdf:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: docker-compose.yaml
+          test-container: pdfMaker
+          test-command: make pdf
+      - name: Generate release tag
+        id: tag
+        run: echo "release_tag=$(date +"%Y.%m.%d_%H-%M")" >> $GITHUB_OUTPUT
+      - name: Deploy preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          token: ${{ github.token }}
+          tag_name: ${{ steps.tag.outputs.release_tag }}
+          target_commitish: ${{ github.sha }}
+          files: |
+            problem.pdf
