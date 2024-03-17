@@ -7,7 +7,7 @@
 \usepackage{musicography}
 \usepackage{xcolor,soul}
 \sethlcolor{lightgray}
-\newcommand{\ContestName}{比賽名稱}
+\newcommand{\ContestName}{contest name}
 
 \title{\ContestName{}}
 \usepackage[xetex,
@@ -49,7 +49,7 @@
 \fancypagestyle{document}
 {
 	\fancyhf{}
-	\fancyhead[L]{\includegraphics[height=10mm]{image/fjcu.png}}
+	\fancyhead[L]{\includegraphics[height=10mm]{image/logo.png}}
 	\fancyhead[C]{\large{\ContestName{}\vspace{1mm}}}
     \fancyfoot[C]{\thepage}
 }
@@ -143,7 +143,7 @@
 %-------封面開始-------%
 \quad \vspace{1cm}
 \begin{center}
-\includegraphics[width=2in]{image/fjcu.png} \\
+\includegraphics[width=2in]{image/logo.png} \\
 \vspace{1cm}
 \begin{bfseries}
 \Large{\ContestName{}} \\
@@ -158,6 +158,7 @@
             ID & Problem Name & Time Limit \\
         \midrule
             % \problemList{folder_name}{problem_name}{time_limit}{memory_limit}
+            \problemList{sample}{Hello World}{1}{2048}
         \bottomrule
     \end{tabular}
 \end{center}
@@ -171,5 +172,6 @@
 \belowdisplayskip=2pt
 
 % \problem{folder_name}{problem_name}{time_limit}{memory_limit}
+\problem{sample}{Hello World}{1}{2048}
 
 \end{document}

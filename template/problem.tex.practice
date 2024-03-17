@@ -7,7 +7,7 @@
 \usepackage{musicography}
 \usepackage{xcolor,soul}
 \sethlcolor{lightgray}
-\newcommand{\ContestName}{題目練習}
+\newcommand{\ContestName}{practice name}
 
 \title{\ContestName{}}
 \usepackage[xetex,
@@ -49,7 +49,7 @@
 \fancypagestyle{document}
 {
 	\fancyhf{}
-	\fancyhead[L]{\includegraphics[height=10mm]{image/fjcu.png}}
+	\fancyhead[L]{\includegraphics[height=10mm]{image/logo.png}}
 	\fancyhead[C]{\large{\ContestName{}\vspace{1mm}}}
     \fancyfoot[C]{\thepage}
 }
@@ -146,5 +146,6 @@
 \belowdisplayskip=2pt
 
 % \problem{folder_name}{problem_name}{time_limit}{memory_limit}
+\problem{sample}{Hello World}{1}{2048}
 
 \end{document}

@@ -6,10 +6,8 @@
 \usepackage{booktabs}
 \usepackage{musicography}
 \usepackage{xcolor,soul}
-\usepackage{algorithm}
-\usepackage{algpseudocode}
 \sethlcolor{lightgray}
-\newcommand{\ContestName}{題目練習}
+\newcommand{\ContestName}{contest name}
 
 \title{\ContestName{}}
 \usepackage[xetex,
@@ -51,7 +49,7 @@
 \fancypagestyle{document}
 {
 	\fancyhf{}
-	\fancyhead[L]{\includegraphics[height=10mm]{image/fjcu.png}}
+	\fancyhead[L]{\includegraphics[height=10mm]{image/logo.png}}
 	\fancyhead[C]{\large{\ContestName{}\vspace{1mm}}}
     \fancyfoot[C]{\thepage}
 }
@@ -105,20 +103,20 @@
 
 \newcommand{\problem}[4] % dir, title, time, memory
 {
-	% \checkoddpage
-	% \ifoddpage
-	% 	% do nothing
-	% \else
-	% 	\begin{center}\vspace*{\fill}
-	% 		{\LARGE Almost blank page}
-	% 	\vspace*{\fill}\end{center}
-	% 	\newpage
-	% \fi
+	\checkoddpage
+	\ifoddpage
+		% do nothing
+	\else
+		\begin{center}\vspace*{\fill}
+			{\LARGE Almost blank page}
+		\vspace*{\fill}\end{center}
+		\newpage
+	\fi
 
 	\stepcounter{pid}
     \vspace*{-8mm}
     \begin{center}
-		% {\Large Problem \Alph{pid}}\\[2mm]
+		{\Large Problem \Alph{pid}}\\[2mm]
 		{\LARGE #2}\\[2mm]
 		\begin{tabular}{r@{}c@{ }l}
 			Time limit&:& #3 \ifthenelse{\equal{#3}{1}}{second}{seconds}\\
@@ -142,17 +140,38 @@
 
 \begin{document}
 
+%-------封面開始-------%
+\quad \vspace{1cm}
+\begin{center}
+\includegraphics[width=2in]{image/logo.png} \\
+\vspace{1cm}
+\begin{bfseries}
+\Large{\ContestName{}} \\
+\end{bfseries}
+% \small{2020 Spring}
+\end{center}
+\vspace{1cm}
+
+\begin{center}
+    \begin{tabular}{clc}
+        \toprule
+            ID & Problem Name & Time Limit \\
+        \midrule
+            % \problemList{folder_name}{problem_name}{time_limit}{memory_limit}
+            \problemList{sample}{Hello World}{1}{2048}
+        \bottomrule
+    \end{tabular}
+\end{center}
+\thispagestyle{empty}
+\clearpage  % 清除當頁頁碼
+%-------封面結束-------%
+
 \abovedisplayshortskip=0pt
 \belowdisplayshortskip=0pt
 \abovedisplayskip=2pt
 \belowdisplayskip=2pt
 
 % \problem{folder_name}{problem_name}{time_limit}{memory_limit}
-% \problem{uva10617}{Again Palindrome}{3}{2048}
-% \problem{number}{輸出數字}{1}{2048}
-% \problem{calculation}{基本運算}{1}{2048}
-% \problem{uva10783}{Odd Sum}{3}{2048}
-% \problem{uva00100}{The 3n + 1 problem}{3}{2048}
-\problem{abc142B}{Roller Coaster}{2}{2048}
+\problem{sample}{Hello World}{1}{2048}
 
 \end{document}

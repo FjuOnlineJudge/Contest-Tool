@@ -1,0 +1,12 @@
+xetex
+texliveonfly
+latexmk
+collection-langeuropean
+collection-fontsrecommended
+luaotfload
+fontspec
+listings
+titlesec
+xecjk
+ctex
+xcolor 
