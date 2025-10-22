@@ -7,11 +7,11 @@
 char reportfile[50];
 
 int main(int argc, char* argv[]) {
-    /*
-    * argv[1]: 輸入
-    * argv[2]: 標準輸出
-    * argv[3]: 測試結果輸出資料夾
-    * stdin: 程式輸出
+    /* 
+    * argv[1]: standard input 
+    * argv[2]: standard output 
+    * argv[3]: judge message 
+    * stdin: user output 
     */
     FILE* fin = fopen(argv[1], "r");
     FILE* fstd = fopen(argv[2], "r");

@@ -49,7 +49,7 @@
 \fancypagestyle{document}
 {
 	\fancyhf{}
-	\fancyhead[L]{\includegraphics[height=10mm]{image/fjcu.png}}
+	\fancyhead[L]{\includegraphics[height=10mm]{template/image/fjcu.png}}
 	\fancyhead[C]{\large{\ContestName{}\vspace{1mm}}}
     \fancyfoot[C]{\thepage}
 }

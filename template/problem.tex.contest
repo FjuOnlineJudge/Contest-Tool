@@ -49,7 +49,7 @@
 \fancypagestyle{document}
 {
 	\fancyhf{}
-	\fancyhead[L]{\includegraphics[height=10mm]{image/fjcu.png}}
+	\fancyhead[L]{\includegraphics[height=10mm]{template/image/fjcu.png}}
 	\fancyhead[C]{\large{\ContestName{}\vspace{1mm}}}
     \fancyfoot[C]{\thepage}
 }
@@ -143,7 +143,7 @@
 %-------封面開始-------%
 \quad \vspace{1cm}
 \begin{center}
-\includegraphics[width=2in]{image/fjcu.png} \\
+\includegraphics[width=2in]{template/image/fjcu.png} \\
 \vspace{1cm}
 \begin{bfseries}
 \Large{\ContestName{}} \\
