@@ -4,37 +4,33 @@ import os
 
 parser = argparse.ArgumentParser(description='Compress problem folder', epilog='')
 group = parser.add_mutually_exclusive_group()
-group.add_argument('-d', '--domjudge', action='store_true', help='export to domjudge archive')
-group.add_argument('-e', '--exclude', nargs= 1, help='select types to exclude (t: tex files, s: submissions, g: generate.py). (e.g. -e ts, -e g)')
-group.add_argument('-p', '--practice', action='store_true', help='export to practice archive')
-parser.add_argument('folder', nargs='+', help='Folder name')
+group.add_argument('-a', '--all', action='store_true', help='compress all problem')
+parser.add_argument('folders', nargs='*', help='The name of folders')
 args = parser.parse_args()
 
-excludeFile = '*.zip'
+def is_problem_dir(path: str) -> bool:
+    if not os.path.isdir(path):
+        return False
+    
+    start = ["abc", "arc", "agc", "cf", "hoj", "uva"]
+    for word in start:
+        if path.startswith(word):
+            return True
+    
+    return False
 
-if args.domjudge:
-    excludeFile = '*.tex *.txt generate.py *.pdf'
-elif args.practice:
-    excludeFile = '*.py *.pdf *.ini *.tex *.txt image/* submissions/*'
-elif args.exclude:
-    str = args.exclude[0]
-    for e in str:
-        if e == 't':
-            excludeFile = excludeFile + ' *.tex'
-        elif e == 's':
-            excludeFile = excludeFile + ' /submissions/*'
-        elif e == 'g':
-            excludeFile = excludeFile + ' generate.py'
+if args.all:
+    problem_dir = [path for path in os.listdir() if is_problem_dir(path)]
+else:
+    problem_dir = args.folders
 
-for folder in args.folder:
-    if not os.path.isdir('./%s'%(folder)):
-        print('%s folder doesn\'t exist'%(folder))
-        continue
+for folder in problem_dir:
+    print(f"Compress {folder}")
     if os.path.isfile('./%s.zip'%(folder)):
         os.remove('./%s.zip'%(folder))
         print('%s.zip exists, remove it...'%(folder))
     os.chdir('./%s'%(folder))
-    subprocess.call('zip %s.zip -r * -x %s'%(folder,excludeFile))
+    subprocess.call(f'zip {folder}.zip -r * -x %s')
     os.chdir('..')
     os.rename('%s/%s.zip'%(folder,folder),'./%s.zip'%(folder))
     
