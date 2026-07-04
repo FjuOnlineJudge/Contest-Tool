@@ -5,11 +5,11 @@ for testCaseId in range(1,2):
     print(f"Generate testcase {testCaseId}")
 
     # random int
-    N = randint(5,15)
-    M = randint(5,15)
+    N = randint(5, 15)
+    M = randint(5, 15)
 
     # random array
-    arr = Vector.random(N, [(1,20), (1, 20)])
+    arr = Vector.random(N, [(1, 20), (1, 20)])
     
     # random graph
     g = Graph.graph(N, M)
@@ -21,4 +21,4 @@ for testCaseId in range(1,2):
         io.input_writeln(e.start, e.end, e.weight)
     
     # run source code to generate output
-    io.output_gen("./a.exe")
+    io.output_gen("a.exe")

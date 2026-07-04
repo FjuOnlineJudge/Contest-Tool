@@ -285,6 +285,7 @@ arc*/
 cf*/
 out/
 uva*/
+_*
 
 # other
 problem.tex
