@@ -33,14 +33,14 @@ def generate_team(team_name: list[str], number: int) -> list[list[str]]:
 
 def generate_team_tsv(team: list[list[str]]) -> None:
     with open("team.tsv", "w") as output_file:
-        output_file.write("team\t1\n")
+        output_file.write("teams\t1\n")
         for t in team:
-            output_file.write(f"{t[Team.ID.value]}\t\t{3}\t{t[Team.DISPLAY_NAME.value]}\n")
+            output_file.write(f"{t[Team.ID.value]}\t\t{5}\t{t[Team.DISPLAY_NAME.value]}\n")
 
 
 def generate_account_tsv(team: list[list[str]]) -> None:
     with open("account.tsv", "w") as output_file:
-        output_file.write("account\t1\n")
+        output_file.write("accounts\t1\n")
         for t in team:
             output_file.write(f"team\t{t[Team.DISPLAY_NAME.value]}\t{t[Team.ACCONUT.value]}\t{t[Team.PASSWORD.value]}\n")
 

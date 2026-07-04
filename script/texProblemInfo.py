@@ -35,7 +35,7 @@ def main():
             if os.path.exists(ini_path):
                 name, timelimit = parse_ini(ini_path)
                 if name and timelimit:
-                    print(f"\problem{{{path}}}{{{name}}}{{{timelimit}}}{{2048}}")
+                    print(f"\\problem{{{path}}}{{{name}}}{{{timelimit}}}{{2048}}")
 
 if __name__ == "__main__":
     main()

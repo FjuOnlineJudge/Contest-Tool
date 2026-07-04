@@ -4,7 +4,7 @@ import shutil
 import subprocess
 
 parser = argparse.ArgumentParser(description="Generate tetsdata in selected folder")
-parser.add_argument("folder", help="Folder name")
+parser.add_argument("folder", nargs='+', help="Folder name")
 args = parser.parse_args()
 
 for folder in args.folder:

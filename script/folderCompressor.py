@@ -1,6 +1,7 @@
 import argparse
 import subprocess
 import os
+import zipfile
 
 parser = argparse.ArgumentParser(description='Compress problem folder', epilog='')
 group = parser.add_mutually_exclusive_group()
@@ -26,11 +27,28 @@ else:
 
 for folder in problem_dir:
     print(f"Compress {folder}")
-    if os.path.isfile('./%s.zip'%(folder)):
-        os.remove('./%s.zip'%(folder))
-        print('%s.zip exists, remove it...'%(folder))
-    os.chdir('./%s'%(folder))
-    subprocess.call(f'zip {folder}.zip -r * -x %s')
-    os.chdir('..')
-    os.rename('%s/%s.zip'%(folder,folder),'./%s.zip'%(folder))
+
+    zip_path = f'./{folder}.zip'
+
+    # 如果 zip 已存在就刪除
+    if os.path.isfile(zip_path):
+        os.remove(zip_path)
+        print(f'{folder}.zip exists, remove it...')
+
+    folder_path = f'./{folder}'
+
+    # 建立 zip
+    with zipfile.ZipFile(zip_path, 'w', zipfile.ZIP_DEFLATED) as zf:
+        for root, dirs, files in os.walk(folder_path):
+            for file in files:
+                full_path = os.path.join(root, file)
+
+                # 排除 zip 本身（避免重複壓縮）
+                if full_path.endswith('.zip'):
+                    continue
+
+                # 壓縮時的相對路徑（避免帶入 ./folder）
+                arcname = os.path.relpath(full_path, folder_path)
+
+                zf.write(full_path, arcname)
     
