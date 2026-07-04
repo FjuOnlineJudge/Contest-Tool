@@ -3,23 +3,26 @@ version: "3.5"
 # you can disable any of services by using comment
 
 services:
-  spotboard:
-    container_name: spotboard
-    image: nikolaik/python-nodejs:latest
-    restart: on-failure
-    command: ["sleep","infinity"]
+  # spotboard:
+  #   container_name: spotboard
+  #   image: nikolaik/python-nodejs:latest
+  #   restart: on-failure
+  #   command: ["sleep","infinity"]
     
-    expose:
-      - "3000"
-    ports:
-      - "3000:3000"
-    volumes:
-      - "./script:/script"
-      - "./spotboard/webapp:/webapp"
+  #   expose:
+  #     - "3000"
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - "./script:/script"
+  #     - "./spotboard/webapp:/webapp"
   
-  pdfMaker:
-    container_name: pdfMaker
-    image: hjackh/codebook-builder
+  pdfmaker:
+    container_name: pdfmaker
+    image: docker.io/fjuonlinejudge/codebook-builder
+    # build:
+    #   context: .
+    #   dockerfile: dockerfile
     command: ["sleep","infinity"]
     restart: on-failure
     volumes:

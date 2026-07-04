@@ -1,4 +1,4 @@
-docker unpause pdfMaker
-docker exec -it pdfMaker bash -c "texliveonfly problem.tex --compiler=xelatex ; latexmk -pdfxe problem.tex"
-docker pause pdfMaker
+docker compose up -d
+docker exec -it pdfmaker bash -c "xelatex problem.tex"
+docker compose down -v
 rm problem.[^tp]*
